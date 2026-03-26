@@ -23,8 +23,6 @@
       --glass-border: rgba(255, 255, 255, 0.14);
       --text: #f8fafc;
       --muted: #94a3b8;
-      --blue: #3b82f6;
-      --blue-2: #60a5fa;
       --green: #22c55e;
       --orange: #f59e0b;
       --red: #ef4444;
@@ -243,8 +241,6 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: 0.3s ease;
-      animation: fadeUp 0.5s ease;
     }
 
     .resultado-texto {
@@ -265,12 +261,6 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       padding: 16px;
-      transition: 0.25s ease;
-    }
-
-    .stat:hover {
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.07);
     }
 
     .stat .titulo {
@@ -335,17 +325,17 @@
 
   <main class="app">
     <section class="card">
-      <div class="badge">⚡ Fitness Premium</div>
+      <div class="badge">⚡ FitMetrics</div>
       <h1>Calculadora corporal</h1>
       <p class="subtitulo">
-        Calcula tu peso ideal, tu IMC y tu rango de peso saludable con un diseño moderno y elegante.
+        Calcula tu peso ideal, tu IMC y tu rango de peso saludable.
       </p>
 
       <div class="grupo">
         <label for="altura">Altura en centímetros</label>
         <div class="input-wrap">
           <span class="input-icon">📏</span>
-          <input type="number" id="altura" placeholder="Ej: 174" />
+          <input type="number" id="altura" placeholder="Ej: 174" min="1" />
         </div>
       </div>
 
@@ -353,7 +343,7 @@
         <label for="pesoActual">Peso actual en kg</label>
         <div class="input-wrap">
           <span class="input-icon">⚖️</span>
-          <input type="number" id="pesoActual" placeholder="Ej: 70" />
+          <input type="number" id="pesoActual" placeholder="Ej: 70" min="1" />
         </div>
       </div>
 
@@ -397,100 +387,39 @@
       </div>
 
       <p class="footer-note">
-        Esta calculadora es orientativa y no reemplaza la evaluación de un profesional de salud.
+        Esta calculadora es orientativa y no reemplaza la evaluación de un profesional.
       </p>
     </section>
   </main>
 
   <script>
     function calcularTodo() {
-  const altura = parseFloat(document.getElementById("altura").value);
-  const pesoActual = parseFloat(document.getElementById("pesoActual").value);
+      const altura = parseFloat(document.getElementById('altura').value);
+      const pesoActual = parseFloat(document.getElementById('pesoActual').value);
 
-  const resultadoPrincipal = document.getElementById("resultadoPrincipal");
-  const pesoIdealEl = document.getElementById("pesoIdeal");
-  const imcEl = document.getElementById("imc");
-  const estadoImcEl = document.getElementById("estadoImc");
-  const pesoMinEl = document.getElementById("pesoMin");
-  const pesoMaxEl = document.getElementById("pesoMax");
+      const resultadoPrincipal = document.getElementById('resultadoPrincipal');
+      const pesoIdealEl = document.getElementById('pesoIdeal');
+      const imcEl = document.getElementById('imc');
+      const estadoImcEl = document.getElementById('estadoImc');
+      const pesoMinEl = document.getElementById('pesoMin');
+      const pesoMaxEl = document.getElementById('pesoMax');
 
-  // Validación altura
-  if (!altura || altura <= 0 || altura > 250) {
-    resultadoPrincipal.innerHTML =
-      "Ingresa una altura válida mayor a 0 y menor a 250 cm.";
-    return;
-  }
+      if (isNaN(altura) || altura <= 0 || altura > 250) {
+        resultadoPrincipal.innerHTML = 'Ingresa una altura válida mayor a 0 y menor a 250 cm.';
+        pesoIdealEl.textContent = '--';
+        imcEl.textContent = '--';
+        estadoImcEl.textContent = '--';
+        estadoImcEl.className = 'estado';
+        pesoMinEl.textContent = '--';
+        pesoMaxEl.textContent = '--';
+        return;
+      }
 
-  // Validación peso
-  if (pesoActual && (pesoActual <= 0 || pesoActual > 400)) {
-    resultadoPrincipal.innerHTML =
-      "Ingresa un peso válido mayor a 0 y menor a 400 kg.";
-    return;
-  }
-
-  const alturaMetros = altura / 100;
-  const pesoIdeal = altura - 100;
-  const pesoMinSaludable = 18.5 * (alturaMetros * alturaMetros);
-  const pesoMaxSaludable = 24.9 * (alturaMetros * alturaMetros);
-
-  pesoIdealEl.textContent = `${pesoIdeal.toFixed(1)} kg`;
-  pesoMinEl.textContent = `${pesoMinSaludable.toFixed(1)} kg`;
-  pesoMaxEl.textContent = `${pesoMaxSaludable.toFixed(1)} kg`;
-
-  if (!pesoActual) {
-    resultadoPrincipal.innerHTML =
-      `Tu peso ideal es <strong>${pesoIdeal.toFixed(1)} kg</strong>.<br>
-       Tu rango saludable va de <strong>${pesoMinSaludable.toFixed(1)} kg</strong> 
-       a <strong>${pesoMaxSaludable.toFixed(1)} kg</strong>.`;
-    return;
-  }
-
-  const imc = pesoActual / (alturaMetros * alturaMetros);
-  imcEl.textContent = imc.toFixed(1);
-
-  let estado = "";
-  let clase = "";
-
-  if (imc < 18.5) {
-    estado = "Bajo peso";
-    clase = "rojo";
-  } else if (imc < 25) {
-    estado = "Peso saludable";
-    clase = "verde";
-  } else if (imc < 30) {
-    estado = "Sobrepeso";
-    clase = "naranja";
-  } else {
-    estado = "Obesidad";
-    clase = "rojo";
-  }
-
-  estadoImcEl.textContent = estado;
-  estadoImcEl.className = `estado ${clase}`;
-
-  resultadoPrincipal.innerHTML =
-    `Tu IMC es <strong>${imc.toFixed(1)}</strong> y tu estado es <strong>${estado}</strong>.<br>
-     Tu rango saludable es entre <strong>${pesoMinSaludable.toFixed(1)} kg</strong> 
-     y <strong>${pesoMaxSaludable.toFixed(1)} kg</strong>.`;
-}
-      const altura = parseFloat(document.getElementById("altura").value);
-      const pesoActual = parseFloat(document.getElementById("pesoActual").value);
-
-      const resultadoPrincipal = document.getElementById("resultadoPrincipal");
-      const pesoIdealEl = document.getElementById("pesoIdeal");
-      const imcEl = document.getElementById("imc");
-      const estadoImcEl = document.getElementById("estadoImc");
-      const pesoMinEl = document.getElementById("pesoMin");
-      const pesoMaxEl = document.getElementById("pesoMax");
-
-      if (!altura || altura <= 0) {
-        resultadoPrincipal.innerHTML = "Ingresa una altura válida para continuar.";
-        pesoIdealEl.textContent = "--";
-        imcEl.textContent = "--";
-        estadoImcEl.textContent = "--";
-        pesoMinEl.textContent = "--";
-        pesoMaxEl.textContent = "--";
-        estadoImcEl.className = "estado";
+      if (!isNaN(pesoActual) && (pesoActual <= 0 || pesoActual > 400)) {
+        resultadoPrincipal.innerHTML = 'Ingresa un peso válido mayor a 0 y menor a 400 kg.';
+        imcEl.textContent = '--';
+        estadoImcEl.textContent = '--';
+        estadoImcEl.className = 'estado';
         return;
       }
 
@@ -503,10 +432,10 @@
       pesoMinEl.textContent = `${pesoMinSaludable.toFixed(1)} kg`;
       pesoMaxEl.textContent = `${pesoMaxSaludable.toFixed(1)} kg`;
 
-      if (!pesoActual || pesoActual <= 0) {
-        imcEl.textContent = "--";
-        estadoImcEl.textContent = "Ingresa tu peso actual";
-        estadoImcEl.className = "estado naranja";
+      if (isNaN(pesoActual)) {
+        imcEl.textContent = '--';
+        estadoImcEl.textContent = 'Ingresa tu peso actual';
+        estadoImcEl.className = 'estado naranja';
         resultadoPrincipal.innerHTML =
           `Tu peso ideal estimado es <strong>${pesoIdeal.toFixed(1)} kg</strong>.<br>Tu rango saludable va de <strong>${pesoMinSaludable.toFixed(1)} kg</strong> a <strong>${pesoMaxSaludable.toFixed(1)} kg</strong>.`;
         return;
@@ -515,21 +444,21 @@
       const imc = pesoActual / (alturaMetros * alturaMetros);
       imcEl.textContent = imc.toFixed(1);
 
-      let estado = "";
-      let clase = "";
+      let estado = '';
+      let clase = '';
 
       if (imc < 18.5) {
-        estado = "Bajo peso";
-        clase = "rojo";
+        estado = 'Bajo peso';
+        clase = 'rojo';
       } else if (imc < 25) {
-        estado = "Peso saludable";
-        clase = "verde";
+        estado = 'Peso saludable';
+        clase = 'verde';
       } else if (imc < 30) {
-        estado = "Sobrepeso";
-        clase = "naranja";
+        estado = 'Sobrepeso';
+        clase = 'naranja';
       } else {
-        estado = "Obesidad";
-        clase = "rojo";
+        estado = 'Obesidad';
+        clase = 'rojo';
       }
 
       estadoImcEl.textContent = estado;
@@ -540,16 +469,16 @@
     }
 
     function limpiarTodo() {
-      document.getElementById("altura").value = "";
-      document.getElementById("pesoActual").value = "";
-      document.getElementById("resultadoPrincipal").textContent =
-        "Ingresa tus datos para ver tu análisis.";
-      document.getElementById("pesoIdeal").textContent = "--";
-      document.getElementById("imc").textContent = "--";
-      document.getElementById("estadoImc").textContent = "--";
-      document.getElementById("estadoImc").className = "estado";
-      document.getElementById("pesoMin").textContent = "--";
-      document.getElementById("pesoMax").textContent = "--";
+      document.getElementById('altura').value = '';
+      document.getElementById('pesoActual').value = '';
+      document.getElementById('resultadoPrincipal').textContent =
+        'Ingresa tus datos para ver tu análisis.';
+      document.getElementById('pesoIdeal').textContent = '--';
+      document.getElementById('imc').textContent = '--';
+      document.getElementById('estadoImc').textContent = '--';
+      document.getElementById('estadoImc').className = 'estado';
+      document.getElementById('pesoMin').textContent = '--';
+      document.getElementById('pesoMax').textContent = '--';
     }
   </script>
 </body>
