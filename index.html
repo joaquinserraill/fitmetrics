@@ -1,488 +1,277 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitMetrics | Peso Ideal e IMC</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3050/3050525.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    :root {
-      --bg-1: #050816;
-      --bg-2: #0f172a;
-      --bg-3: #111827;
-      --glass: rgba(255, 255, 255, 0.08);
-      --glass-border: rgba(255, 255, 255, 0.14);
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --green: #22c55e;
-      --orange: #f59e0b;
-      --red: #ef4444;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-    }
+<title>FitMetrics | Peso Ideal e IMC</title>
 
-    body {
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.18), transparent 28%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
-      overflow-x: hidden;
-    }
+<link rel="icon" type="image/png" href="logo-fitmetrics.png.png">
 
-    .bg-blur {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    .blob {
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(80px);
-      opacity: 0.35;
-      animation: floatBlob 10s ease-in-out infinite alternate;
-    }
+<style>
 
-    .blob.one {
-      width: 240px;
-      height: 240px;
-      background: #2563eb;
-      top: 8%;
-      left: 8%;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
 
-    .blob.two {
-      width: 280px;
-      height: 280px;
-      background: #7c3aed;
-      bottom: 6%;
-      right: 10%;
-      animation-delay: 1.5s;
-    }
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#000000,#0a0a0a,#111827);
+color:white;
+padding:20px;
+}
 
-    @keyframes floatBlob {
-      from {
-        transform: translateY(0px) translateX(0px) scale(1);
-      }
-      to {
-        transform: translateY(-20px) translateX(12px) scale(1.05);
-      }
-    }
+.card{
+width:100%;
+max-width:420px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.1);
+padding:30px;
+border-radius:30px;
+box-shadow:0 20px 60px rgba(0,0,0,0.6);
+animation:fadeUp .8s ease;
+}
 
-    .app {
-      width: 100%;
-      max-width: 460px;
-      position: relative;
-      z-index: 2;
-      animation: fadeUp 0.8s ease;
-    }
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.titulo{
+text-align:center;
+font-size:28px;
+font-weight:800;
+letter-spacing:-0.5px;
+margin-bottom:10px;
+background:linear-gradient(180deg,#ffffff,#9ca3af);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
 
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-radius: 28px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
+.sub{
+text-align:center;
+color:#9ca3af;
+margin-bottom:25px;
+font-size:14px;
+}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #dbeafe;
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+font-size:14px;
+}
 
-    h1 {
-      font-size: 32px;
-      line-height: 1.05;
-      margin-bottom: 10px;
-      letter-spacing: -1px;
-    }
+input{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
+color:white;
+margin-bottom:15px;
+outline:none;
+transition:.2s;
+}
 
-    .subtitulo {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 26px;
-    }
+input:focus{
+border:1px solid #3b82f6;
+box-shadow:0 0 0 3px rgba(59,130,246,.2);
+}
 
-    .grupo {
-      margin-bottom: 18px;
-    }
+button{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+font-weight:700;
+cursor:pointer;
+margin-top:10px;
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+color:white;
+transition:.2s;
+}
 
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: #e2e8f0;
-      font-size: 14px;
-    }
+button:hover{
+transform:translateY(-2px);
+}
 
-    .input-wrap {
-      position: relative;
-    }
+.result{
+margin-top:20px;
+background:rgba(255,255,255,0.05);
+padding:18px;
+border-radius:20px;
+text-align:center;
+font-weight:600;
+}
 
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      opacity: 0.75;
-    }
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
+}
 
-    input {
-      width: 100%;
-      padding: 15px 16px 15px 44px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255, 255, 255, 0.07);
-      color: white;
-      font-size: 16px;
-      outline: none;
-      transition: 0.25s ease;
-    }
+.stat{
+background:rgba(255,255,255,0.04);
+padding:15px;
+border-radius:18px;
+text-align:center;
+}
 
-    input::placeholder {
-      color: #94a3b8;
-    }
+.stat h4{
+font-size:12px;
+color:#9ca3af;
+margin-bottom:5px;
+}
 
-    input:focus {
-      border-color: rgba(96, 165, 250, 0.7);
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.16);
-      transform: translateY(-1px);
-    }
+.stat p{
+font-weight:700;
+font-size:18px;
+}
 
-    .botones {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
-    }
+.verde{color:#22c55e;}
+.rojo{color:#ef4444;}
+.naranja{color:#f59e0b;}
 
-    button {
-      border: none;
-      border-radius: 16px;
-      padding: 15px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
-    }
+</style>
 
-    button:hover {
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      color: white;
-      background: linear-gradient(135deg, #2563eb, #3b82f6, #60a5fa);
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-secondary {
-      color: #dbeafe;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .panel {
-      margin-top: 24px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .resultado-box {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 18px;
-      min-height: 88px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .resultado-texto {
-      font-size: 18px;
-      font-weight: 700;
-      color: #bfdbfe;
-      line-height: 1.5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .stat {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 16px;
-    }
-
-    .stat .titulo {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat .valor {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .mini {
-      font-size: 12px;
-      color: #cbd5e1;
-      margin-top: 6px;
-      line-height: 1.4;
-    }
-
-    .estado {
-      margin-top: 2px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .verde { color: var(--green); }
-    .naranja { color: var(--orange); }
-    .rojo { color: var(--red); }
-
-    .footer-note {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 12px;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 520px) {
-      .card {
-        padding: 22px;
-        border-radius: 24px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .grid,
-      .botones {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
 </head>
-<body>
-  <div class="bg-blur">
-    <div class="blob one"></div>
-    <div class="blob two"></div>
-  </div>
 
-  <main class="app">
-    <section class="card">
-      <div style="text-align:center; margin-bottom:20px;">
-<img src="logo-fitmetrics.png.png"
-style="width:240px; max-width:100%; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.4));">
+<body>
+
+<div class="card">
+
+<div class="titulo">
+FitMetrics
 </div>
 
-<p class="subtitulo">
-Calcula tu peso ideal, tu IMC y tu rango de peso saludable.
-</p>
+<div class="sub">
+Calcula tu peso ideal, tu IMC y tu rango de peso saludable
+</div>
 
-      <div class="grupo">
-        <label for="altura">Altura en centímetros</label>
-        <div class="input-wrap">
-          <span class="input-icon">📏</span>
-          <input type="number" id="altura" placeholder="Ej: 174" min="1" />
-        </div>
-      </div>
+<label>Altura en centímetros</label>
+<input type="number" id="altura" placeholder="Ej: 174" min="1">
 
-      <div class="grupo">
-        <label for="pesoActual">Peso actual en kg</label>
-        <div class="input-wrap">
-          <span class="input-icon">⚖️</span>
-          <input type="number" id="pesoActual" placeholder="Ej: 70" min="1" />
-        </div>
-      </div>
+<label>Peso actual en kg</label>
+<input type="number" id="peso" placeholder="Ej: 70" min="1">
 
-      <div class="botones">
-        <button class="btn-primary" onclick="calcularTodo()">Calcular</button>
-        <button class="btn-secondary" onclick="limpiarTodo()">Limpiar</button>
-      </div>
+<button onclick="calcular()">Calcular</button>
 
-      <div class="panel">
-        <div class="resultado-box">
-          <div class="resultado-texto" id="resultadoPrincipal">
-            Ingresa tus datos para ver tu análisis.
-          </div>
-        </div>
+<div class="result" id="resultado">
+Ingresa tus datos
+</div>
 
-        <div class="grid">
-          <div class="stat">
-            <div class="titulo">🎯 Peso ideal</div>
-            <div class="valor" id="pesoIdeal">--</div>
-            <div class="mini">Fórmula simple: altura - 100</div>
-          </div>
+<div class="grid">
 
-          <div class="stat">
-            <div class="titulo">📊 IMC</div>
-            <div class="valor" id="imc">--</div>
-            <div class="estado" id="estadoImc">--</div>
-          </div>
+<div class="stat">
+<h4>Peso Ideal</h4>
+<p id="pesoIdeal">--</p>
+</div>
 
-          <div class="stat">
-            <div class="titulo">🟢 Peso mínimo saludable</div>
-            <div class="valor" id="pesoMin">--</div>
-            <div class="mini">Basado en IMC 18.5</div>
-          </div>
+<div class="stat">
+<h4>IMC</h4>
+<p id="imc">--</p>
+</div>
 
-          <div class="stat">
-            <div class="titulo">🔵 Peso máximo saludable</div>
-            <div class="valor" id="pesoMax">--</div>
-            <div class="mini">Basado en IMC 24.9</div>
-          </div>
-        </div>
-      </div>
+<div class="stat">
+<h4>Peso mínimo</h4>
+<p id="pesoMin">--</p>
+</div>
 
-      <p class="footer-note">
-        Esta calculadora es orientativa y no reemplaza la evaluación de un profesional.
-      </p>
-    </section>
-  </main>
+<div class="stat">
+<h4>Peso máximo</h4>
+<p id="pesoMax">--</p>
+</div>
 
-  <script>
-    function calcularTodo() {
-      const altura = parseFloat(document.getElementById('altura').value);
-      const pesoActual = parseFloat(document.getElementById('pesoActual').value);
+</div>
 
-      const resultadoPrincipal = document.getElementById('resultadoPrincipal');
-      const pesoIdealEl = document.getElementById('pesoIdeal');
-      const imcEl = document.getElementById('imc');
-      const estadoImcEl = document.getElementById('estadoImc');
-      const pesoMinEl = document.getElementById('pesoMin');
-      const pesoMaxEl = document.getElementById('pesoMax');
+</div>
 
-      if (isNaN(altura) || altura <= 0 || altura > 250) {
-        resultadoPrincipal.innerHTML = 'Ingresa una altura válida mayor a 0 y menor a 250 cm.';
-        pesoIdealEl.textContent = '--';
-        imcEl.textContent = '--';
-        estadoImcEl.textContent = '--';
-        estadoImcEl.className = 'estado';
-        pesoMinEl.textContent = '--';
-        pesoMaxEl.textContent = '--';
-        return;
-      }
+<script>
 
-      if (!isNaN(pesoActual) && (pesoActual <= 0 || pesoActual > 400)) {
-        resultadoPrincipal.innerHTML = 'Ingresa un peso válido mayor a 0 y menor a 400 kg.';
-        imcEl.textContent = '--';
-        estadoImcEl.textContent = '--';
-        estadoImcEl.className = 'estado';
-        return;
-      }
+function calcular(){
 
-      const alturaMetros = altura / 100;
-      const pesoIdeal = altura - 100;
-      const pesoMinSaludable = 18.5 * (alturaMetros * alturaMetros);
-      const pesoMaxSaludable = 24.9 * (alturaMetros * alturaMetros);
+let altura=parseFloat(document.getElementById("altura").value)
+let peso=parseFloat(document.getElementById("peso").value)
 
-      pesoIdealEl.textContent = `${pesoIdeal.toFixed(1)} kg`;
-      pesoMinEl.textContent = `${pesoMinSaludable.toFixed(1)} kg`;
-      pesoMaxEl.textContent = `${pesoMaxSaludable.toFixed(1)} kg`;
+let resultado=document.getElementById("resultado")
+let pesoIdeal=document.getElementById("pesoIdeal")
+let imc=document.getElementById("imc")
+let pesoMin=document.getElementById("pesoMin")
+let pesoMax=document.getElementById("pesoMax")
 
-      if (isNaN(pesoActual)) {
-        imcEl.textContent = '--';
-        estadoImcEl.textContent = 'Ingresa tu peso actual';
-        estadoImcEl.className = 'estado naranja';
-        resultadoPrincipal.innerHTML =
-          `Tu peso ideal estimado es <strong>${pesoIdeal.toFixed(1)} kg</strong>.<br>Tu rango saludable va de <strong>${pesoMinSaludable.toFixed(1)} kg</strong> a <strong>${pesoMaxSaludable.toFixed(1)} kg</strong>.`;
-        return;
-      }
+if(!altura || altura<=0){
 
-      const imc = pesoActual / (alturaMetros * alturaMetros);
-      imcEl.textContent = imc.toFixed(1);
+resultado.innerHTML="Ingresa una altura válida"
+return
 
-      let estado = '';
-      let clase = '';
+}
 
-      if (imc < 18.5) {
-        estado = 'Bajo peso';
-        clase = 'rojo';
-      } else if (imc < 25) {
-        estado = 'Peso saludable';
-        clase = 'verde';
-      } else if (imc < 30) {
-        estado = 'Sobrepeso';
-        clase = 'naranja';
-      } else {
-        estado = 'Obesidad';
-        clase = 'rojo';
-      }
+let alturaM=altura/100
 
-      estadoImcEl.textContent = estado;
-      estadoImcEl.className = `estado ${clase}`;
+let ideal=altura-100
+let min=18.5*(alturaM*alturaM)
+let max=24.9*(alturaM*alturaM)
 
-      resultadoPrincipal.innerHTML =
-        `Tu IMC es <strong>${imc.toFixed(1)}</strong> y tu estado actual es <strong>${estado}</strong>.<br>Tu rango saludable estimado va desde <strong>${pesoMinSaludable.toFixed(1)} kg</strong> hasta <strong>${pesoMaxSaludable.toFixed(1)} kg</strong>.`;
-    }
+pesoIdeal.innerHTML=ideal.toFixed(1)+" kg"
+pesoMin.innerHTML=min.toFixed(1)+" kg"
+pesoMax.innerHTML=max.toFixed(1)+" kg"
 
-    function limpiarTodo() {
-      document.getElementById('altura').value = '';
-      document.getElementById('pesoActual').value = '';
-      document.getElementById('resultadoPrincipal').textContent =
-        'Ingresa tus datos para ver tu análisis.';
-      document.getElementById('pesoIdeal').textContent = '--';
-      document.getElementById('imc').textContent = '--';
-      document.getElementById('estadoImc').textContent = '--';
-      document.getElementById('estadoImc').className = 'estado';
-      document.getElementById('pesoMin').textContent = '--';
-      document.getElementById('pesoMax').textContent = '--';
-    }
-  </script>
+if(!peso || peso<=0){
+
+resultado.innerHTML="Peso ideal calculado correctamente"
+return
+
+}
+
+let valorIMC=peso/(alturaM*alturaM)
+
+imc.innerHTML=valorIMC.toFixed(1)
+
+let estado=""
+
+if(valorIMC<18.5){
+estado="Bajo peso"
+imc.className="rojo"
+}
+
+else if(valorIMC<25){
+estado="Saludable"
+imc.className="verde"
+}
+
+else if(valorIMC<30){
+estado="Sobrepeso"
+imc.className="naranja"
+}
+
+else{
+estado="Obesidad"
+imc.className="rojo"
+}
+
+resultado.innerHTML=
+"Tu IMC es "+valorIMC.toFixed(1)+" ("+estado+")"
+
+}
+
+</script>
+
 </body>
 </html>
