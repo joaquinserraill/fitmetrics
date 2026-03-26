@@ -1,104 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Peso Ideal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Peso Ideal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-<style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #050505, #111827, #1f2937);
+      color: white;
+      padding: 20px;
+    }
 
-body {
-font-family: Arial, sans-serif;
-background: linear-gradient(135deg,#e3f2fd,#bbdefb);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
+    .card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+    }
 
-.card {
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-width:320px;
-text-align:center;
-}
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
 
-h1{
-color:#1976d2;
-margin-bottom:20px;
-}
+    .subtitulo {
+      text-align: center;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
 
-input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:1px solid #ccc;
-margin-bottom:15px;
-font-size:16px;
-}
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+      font-weight: bold;
+    }
 
-button{
-background:#1976d2;
-color:white;
-border:none;
-padding:12px;
-width:100%;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      font-size: 16px;
+      margin-bottom: 18px;
+      outline: none;
+    }
 
-button:hover{
-background:#0d47a1;
-}
+    input::placeholder {
+      color: #9ca3af;
+    }
 
-.resultado{
-margin-top:20px;
-font-size:18px;
-font-weight:bold;
-color:#1976d2;
-}
+    input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+    }
 
-</style>
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
 
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .resultado {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #93c5fd;
+      min-height: 24px;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="card">
+    <h1>Peso Ideal</h1>
+    <p class="subtitulo">Calcula tu peso ideal según tu estatura</p>
 
-<div class="card">
+    <label for="altura">Altura en cm</label>
+    <input type="number" id="altura" placeholder="Ej: 174">
 
-<h1>Calculadora Peso Ideal</h1>
+    <button onclick="calcular()">Calcular</button>
 
-<input type="number" id="altura" placeholder="Ingresa tu altura (cm)">
+    <div class="resultado" id="resultado"></div>
+  </div>
 
-<button onclick="calcular()">Calcular</button>
+  <script>
+    function calcular() {
+      let altura = document.getElementById("altura").value;
+      let resultado = document.getElementById("resultado");
 
-<div class="resultado" id="resultado"></div>
+      if (altura === "") {
+        resultado.innerHTML = "Ingresa una altura válida";
+        return;
+      }
 
-</div>
-
-<script>
-
-function calcular(){
-
-let altura = document.getElementById("altura").value;
-
-if(altura === ""){
-document.getElementById("resultado").innerHTML="Ingresa una altura válida";
-return;
-}
-
-let peso = altura - 100;
-
-document.getElementById("resultado").innerHTML =
-"Tu peso ideal es: " + peso + " kg";
-
-}
-
-</script>
-
+      let peso = altura - 100;
+      resultado.innerHTML = "Tu peso ideal es: " + peso + " kg";
+    }
+  </script>
 </body>
 </html>
